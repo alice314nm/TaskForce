@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
 
 export default function NotificationsScreen() {
-  const notifications = []; // Add your notifications data here
+  const notifications = []; // Your notifications data
 
   return (
     <View style={styles.container}>
@@ -13,7 +13,6 @@ export default function NotificationsScreen() {
           <List.Item
             title={item.title}
             description={item.message}
-            left={props => <List.Icon {...props} icon="bell" />}
           />
         )}
         keyExtractor={item => item.id}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, RadioButton } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -8,6 +8,7 @@ export default function CreateTaskScreen({ navigation }) {
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState(new Date());
   const [category, setCategory] = useState('assignment');
+
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
@@ -19,37 +20,26 @@ export default function CreateTaskScreen({ navigation }) {
   const onDateChange = (event, selectedDate) => {
     setShowDatePicker(false);
     if (selectedDate) {
-      // Update only the date part of dueDate
-      const currentDate = new Date(dueDate);
-      currentDate.setFullYear(selectedDate.getFullYear());
-      currentDate.setMonth(selectedDate.getMonth());
-      currentDate.setDate(selectedDate.getDate());
+      // Update date part of dueDate
+      const currentDate = new Date(selectedDate);
+      currentDate.setHours(dueDate.getHours());
+      currentDate.setMinutes(dueDate.getMinutes());
       setDueDate(currentDate);
 
-      if (Platform.OS === 'android') {
-        // On Android, show time picker after date is selected
-        setShowTimePicker(true);
-      }
+      // Show time picker after date is selected
+      setShowTimePicker(true);
     }
   };
 
   const onTimeChange = (event, selectedTime) => {
     setShowTimePicker(false);
     if (selectedTime) {
-      // Update only the time part of dueDate
+      // Update time part of dueDate
       const currentDate = new Date(dueDate);
       currentDate.setHours(selectedTime.getHours());
       currentDate.setMinutes(selectedTime.getMinutes());
       setDueDate(currentDate);
     }
-  };
-
-  const showDatepicker = () => {
-    setShowDatePicker(true);
-  };
-
-  const showTimepicker = () => {
-    setShowTimePicker(true);
   };
 
   return (
@@ -68,13 +58,8 @@ export default function CreateTaskScreen({ navigation }) {
         style={styles.input}
       />
 
-      <Button 
-        onPress={() => {
-          showDatepicker();
-          if (Platform.OS === 'ios') {
-            showTimepicker(); // On iOS, show both pickers together
-          }
-        }} 
+      <Button
+        onPress={() => setShowDatePicker(true)}
         mode="outlined"
         style={styles.input}
       >

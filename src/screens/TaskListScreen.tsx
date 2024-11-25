@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import TaskCard from '../components/TaskCard';
 
 export default function TaskListScreen() {
-  const tasks = []; // Add your tasks data here
+  const tasks = []; // Add tasks data here from json
 
   return (
     <View style={styles.container}>

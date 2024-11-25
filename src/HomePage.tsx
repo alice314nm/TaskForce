@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -10,29 +11,28 @@ import CreateTaskScreen from './screens/CreateTaskScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function TabNavigator() {
+function TabNavigator({ navigation }) {
   return (
-    <Tab.Navigator>
-      <Tab.Screen 
-        name="Schedule" 
+    <Tab.Navigator
+      screenOptions={{
+        tabBarShowIcon: false,
+        tabBarIconStyle: { display: 'none' },
+        tabBarLabelStyle: {
+          fontSize: 14,
+        }
+      }}
+    >
+      <Tab.Screen
+        name="Calendar"
         component={WeeklyScheduleScreen}
-        options={{
-          title: 'Weekly Schedule'
-        }}
       />
-      <Tab.Screen 
-        name="Tasks" 
+      <Tab.Screen
+        name="All Tasks"
         component={TaskListScreen}
-        options={{
-          title: 'Task List'
-        }}
       />
-      <Tab.Screen 
-        name="Notifications" 
+      <Tab.Screen
+        name="Notifications"
         component={NotificationsScreen}
-        options={{
-          title: 'Notifications'
-        }}
       />
     </Tab.Navigator>
   );

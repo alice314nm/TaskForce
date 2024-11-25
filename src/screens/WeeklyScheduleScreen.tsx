@@ -9,7 +9,7 @@ export default function WeeklyScheduleScreen({ navigation }) {
       <WeeklyCalendar />
       <FAB
         style={styles.fab}
-        icon="plus"
+        label="Add +"
         onPress={() => navigation.navigate('CreateTask')}
       />
     </View>
