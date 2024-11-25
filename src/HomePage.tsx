@@ -1,0 +1,64 @@
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import WeeklyScheduleScreen from './screens/WeeklyScheduleScreen';
+import TaskListScreen from './screens/TaskListScreen';
+import NotificationsScreen from './screens/NotificationsScreen';
+import CreateTaskScreen from './screens/CreateTaskScreen';
+
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+function TabNavigator() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen 
+        name="Schedule" 
+        component={WeeklyScheduleScreen}
+        options={{
+          title: 'Weekly Schedule'
+        }}
+      />
+      <Tab.Screen 
+        name="Tasks" 
+        component={TaskListScreen}
+        options={{
+          title: 'Task List'
+        }}
+      />
+      <Tab.Screen 
+        name="Notifications" 
+        component={NotificationsScreen}
+        options={{
+          title: 'Notifications'
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+function AppNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen 
+        name="Main" 
+        component={TabNavigator} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="CreateTask" 
+        component={CreateTaskScreen}
+        options={{ title: 'Create New Task' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+export default function Home() {
+  return (
+    <NavigationContainer>
+      <AppNavigator />
+    </NavigationContainer>
+  );
+}

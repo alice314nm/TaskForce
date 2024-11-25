@@ -1,0 +1,128 @@
+import React, { useState } from 'react';
+import { View, StyleSheet, Platform } from 'react-native';
+import { TextInput, Button, RadioButton } from 'react-native-paper';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+export default function CreateTaskScreen({ navigation }) {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState(new Date());
+  const [category, setCategory] = useState('assignment');
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
+  const handleSubmit = () => {
+    // Add task creation logic here
+    navigation.goBack();
+  };
+
+  const onDateChange = (event, selectedDate) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      // Update only the date part of dueDate
+      const currentDate = new Date(dueDate);
+      currentDate.setFullYear(selectedDate.getFullYear());
+      currentDate.setMonth(selectedDate.getMonth());
+      currentDate.setDate(selectedDate.getDate());
+      setDueDate(currentDate);
+
+      if (Platform.OS === 'android') {
+        // On Android, show time picker after date is selected
+        setShowTimePicker(true);
+      }
+    }
+  };
+
+  const onTimeChange = (event, selectedTime) => {
+    setShowTimePicker(false);
+    if (selectedTime) {
+      // Update only the time part of dueDate
+      const currentDate = new Date(dueDate);
+      currentDate.setHours(selectedTime.getHours());
+      currentDate.setMinutes(selectedTime.getMinutes());
+      setDueDate(currentDate);
+    }
+  };
+
+  const showDatepicker = () => {
+    setShowDatePicker(true);
+  };
+
+  const showTimepicker = () => {
+    setShowTimePicker(true);
+  };
+
+  return (
+    <View style={styles.container}>
+      <TextInput
+        label="Title"
+        value={title}
+        onChangeText={setTitle}
+        style={styles.input}
+      />
+      <TextInput
+        label="Description"
+        value={description}
+        onChangeText={setDescription}
+        multiline
+        style={styles.input}
+      />
+
+      <Button 
+        onPress={() => {
+          showDatepicker();
+          if (Platform.OS === 'ios') {
+            showTimepicker(); // On iOS, show both pickers together
+          }
+        }} 
+        mode="outlined"
+        style={styles.input}
+      >
+        Select Due Date: {dueDate.toLocaleString()}
+      </Button>
+
+      {showDatePicker && (
+        <DateTimePicker
+          value={dueDate}
+          mode="date"
+          display="default"
+          onChange={onDateChange}
+        />
+      )}
+
+      {showTimePicker && (
+        <DateTimePicker
+          value={dueDate}
+          mode="time"
+          display="default"
+          onChange={onTimeChange}
+        />
+      )}
+
+      <RadioButton.Group
+        onValueChange={value => setCategory(value)}
+        value={category}
+      >
+        <RadioButton.Item label="Assignment" value="assignment" />
+        <RadioButton.Item label="Test" value="test" />
+      </RadioButton.Group>
+
+      <Button mode="contained" onPress={handleSubmit} style={styles.button}>
+        Create Task
+      </Button>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  input: {
+    marginBottom: 16,
+  },
+  button: {
+    marginTop: 16,
+  },
+});
