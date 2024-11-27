@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, RadioButton } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import axios from 'axios'; 
 
 export default function CreateTaskScreen({ navigation }) {
   const [title, setTitle] = useState('');
@@ -12,9 +13,19 @@ export default function CreateTaskScreen({ navigation }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  const handleSubmit = () => {
-    // Add task creation logic here
-    navigation.goBack();
+  const handleSubmit = async () => {
+    try {
+      await axios.post('http://10.0.2.2:5000/', {
+        title,
+        description,
+        dueDate,
+        completed: false,
+        category
+      });
+      navigation.goBack();
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
   };
 
   const onDateChange = (event, selectedDate) => {

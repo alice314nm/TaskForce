@@ -2,17 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import TaskCard from '../components/TaskCard';
 import axios from "axios";
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function TaskListScreen() {
-  const [tasks, setTasks] = useState([]); // Add tasks data here from json
+  const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://10.0.2.2:5000/")
-      .then((response) => setTasks(response.data))
-      .catch((error) => console.error(error));
-  }, []);
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get("http://10.0.2.2:5000/");
+      setTasks(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTasks();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>

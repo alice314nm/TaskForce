@@ -1,20 +1,14 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const connectDB = async () => {
-    try{
-        const conn = await mongoose.connect(
-            'mongodb+srv://technpc:3QTcjq0OLq2BRRKb@tasks.lk1ha.mongodb.net/task-force?retryWrites=true&w=majority&appName=Tasks',
-            {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-            });
-        console.log(`MongoDb Connected: ${conn.connection.host}`)
-
-    }
-    catch (error) {
+    try {
+        const conn = await mongoose.connect(process.env.MONGO_URI);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
         console.error(error);
         process.exit(1);
     }
-}
+};
 
 module.exports = connectDB;
