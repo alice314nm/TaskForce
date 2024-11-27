@@ -6,7 +6,7 @@ import Home from './src/HomePage';
 AppRegistry.registerComponent(appName, () => Home);
 
 export interface Task {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   dueDate: Date;
@@ -15,7 +15,7 @@ export interface Task {
 }
 
 export interface Notification {
-  id: string;
+  _id: string;
   title: string;
   message: string;
   date: Date;
