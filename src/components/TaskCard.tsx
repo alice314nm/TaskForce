@@ -13,7 +13,7 @@ export default function TaskCard({ task }: TaskCardProps) {
       <Card.Content>
         <Title>{task.title}</Title>
         <Paragraph>{task.description}</Paragraph>
-        <Paragraph>Due: {task.dueDate.toLocaleDateString()}</Paragraph>
+        <Paragraph>Due: {new Date(task.dueDate).toLocaleDateString()}</Paragraph>
       </Card.Content>
     </Card>
   );
