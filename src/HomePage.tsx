@@ -7,7 +7,6 @@ import WeeklyScheduleScreen from './screens/WeeklyScheduleScreen';
 import TaskListScreen from './screens/TaskListScreen';
 import NotificationsScreen from './screens/NotificationsScreen';
 import CreateTaskScreen from './screens/CreateTaskScreen';
-// import usePushNotification from './notifications/UsePushNotification';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -57,30 +56,6 @@ function AppNavigator() {
 }
 
 export default function Home() {
-  // const {
-  //   requestUserPermission,
-  //   getFCMToken,
-  //   listenToBackgroundNotifications,
-  //   onNotificationOpenedAppFromBackground,
-  //   onNotificationOpenedAppFromQuit,
-  // } = usePushNotification();
-
-  // useEffect(() => {
-  //   const listenToNotifications = () => {
-  //     try {
-  //       getFCMToken();
-  //       requestUserPermission();
-  //       onNotificationOpenedAppFromQuit();
-  //       listenToBackgroundNotifications();
-  //       onNotificationOpenedAppFromBackground();
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   listenToNotifications();
-  // }, []);
-
   return (
     <NavigationContainer>
       <AppNavigator />
