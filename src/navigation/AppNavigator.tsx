@@ -1,14 +1,8 @@
 import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-//import {createNativeStackNavigator} from '@react-navigation/native-stack';
-//import WeeklyScheduleScreen from '../screens/WeeklyScheduleScreen';
-//import CreateTaskScreen from '../screens/CreateTaskScreen';
-//import TaskListScreen from '../screens/TaskListScreen';
-//import NotificationsScreen from '../screens/NotificationsScreen';
-import {NavigationContainer} from '@react-navigation/native'; //Added this line
-import CalendarStackNavigation from './CalendarStackNavigation'; //Added this line
-import AllTasksNavigation from './AllTasksNavigation'; //Added this line
-import NotificationsNavigation from './NotificationNavigation'; //Added this line
+import {NavigationContainer} from '@react-navigation/native';
+import CalendarStackNavigation from './CalendarStackNavigation';
+import AllTasksNavigation from './AllTasksNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,11 +30,6 @@ function AppNavigator() {
         <Tab.Screen
           name="All Tasks"
           component={AllTasksNavigation}
-          options={{headerShown: false}}
-        />
-        <Tab.Screen
-          name="Notifications"
-          component={NotificationsNavigation}
           options={{headerShown: false}}
         />
       </Tab.Navigator>

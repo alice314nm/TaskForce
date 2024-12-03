@@ -1,17 +1,15 @@
-import React, { useEffect } from 'react';
-import { Button } from 'react-native';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WeeklyScheduleScreen from './screens/WeeklyScheduleScreen';
 import TaskListScreen from './screens/TaskListScreen';
-import NotificationsScreen from './screens/NotificationsScreen';
 import CreateTaskScreen from './screens/CreateTaskScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function TabNavigator({ navigation }) {
+function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -29,10 +27,6 @@ function TabNavigator({ navigation }) {
       <Tab.Screen
         name="All Tasks"
         component={TaskListScreen}
-      />
-      <Tab.Screen
-        name="Notifications"
-        component={NotificationsScreen}
       />
     </Tab.Navigator>
   );
