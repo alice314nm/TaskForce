@@ -13,8 +13,7 @@ function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarShowIcon: false,
-        tabBarIconStyle: { display: 'none' },
+        tabBarIcon: () => null,
         tabBarLabelStyle: {
           fontSize: 14,
         }

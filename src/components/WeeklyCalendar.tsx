@@ -1,24 +1,26 @@
-import {set} from 'mongoose';
-import React from 'react';
-import {useState} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { IconButton } from 'react-native-paper';
+import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
 
 const WeeklyCalendar = () => {
-  // declare a variable for bar height (total height of the bar)
+  const [weekOffset, setWeekOffset] = useState(0);
   const currentDate = new Date();
   const [chosenDay, setChosenDay] = useState(currentDate.getDay());
   const [weekTasks, setWeekTasks] = useState<any[][]>([]);
 
-  // Get dates for the current week
+  // Add navigation functions
+  const goToPreviousWeek = () => setWeekOffset(prev => prev - 1);
+  const goToNextWeek = () => setWeekOffset(prev => prev + 1);
+
+  // Modified getWeekDates to use weekOffset
   const getWeekDates = () => {
     const dates = [];
     const firstDayOfWeek = new Date(currentDate);
-    // Adjust to start of week (Sunday)
-    firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+    // Adjust to start of week (Sunday) and apply week offset
+    firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + (weekOffset * 7));
 
-    // Create array of 7 days
     for (let i = 0; i < 7; i++) {
       const date = new Date(firstDayOfWeek);
       date.setDate(firstDayOfWeek.getDate() + i);
@@ -65,6 +67,23 @@ const WeeklyCalendar = () => {
   // Get current date
   return (
     <View style={styles.container}>
+      {/* Week Navigation */}
+      <View style={styles.navigation}>
+        <IconButton
+          icon="chevron-left"
+          size={24}
+          onPress={goToPreviousWeek}
+        />
+        <Text style={styles.weekText}>
+          Week of {getWeekDates()[0].toLocaleDateString()}
+        </Text>
+        <IconButton
+          icon="chevron-right"
+          size={24}
+          onPress={goToNextWeek}
+        />
+      </View>
+
       {/* Day headers */}
       <View style={styles.headerRow}>
         {weekDays.map((day, index) => (
@@ -152,6 +171,19 @@ const styles = StyleSheet.create({
   // if the tasks are more than 10, the bar will turn red
   dayTaskBarFull: {
     backgroundColor: 'red',
+  },
+  navigation: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: '#5EA1A4',
+  },
+  weekText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
 

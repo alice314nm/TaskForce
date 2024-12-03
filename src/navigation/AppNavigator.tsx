@@ -16,11 +16,19 @@ function AppNavigator() {
           tabBarActiveBackgroundColor: '#75A1A4',
           tabBarIconStyle: {
             display: 'none',
+            height: 0,
           },
           tabBarLabelStyle: {
             fontSize: 14,
+            position: 'absolute',
+            top: 10, // Adjust this value to move text up/down
           },
-          tabBarStyle: {backgroundColor: '#757575'},
+          tabBarStyle: {
+            backgroundColor: '#757575',
+            height: 45,
+            paddingBottom: 0,
+            paddingTop: 0, // Remove top padding
+          }
         }}>
         <Tab.Screen
           name="Calendar"
