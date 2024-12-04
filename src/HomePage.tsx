@@ -16,6 +16,7 @@ function TabNavigator() {
         tabBarIcon: () => null,
         tabBarLabelStyle: {
           fontSize: 14,
+          bottom: 15
         }
       }}
     >
