@@ -1,38 +1,47 @@
 import * as React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import WeeklyScheduleScreen from '../screens/WeeklyScheduleScreen';
-import CreateTaskScreen from '../screens/CreateTaskScreen';
-import TaskListScreen from '../screens/TaskListScreen';
-import NotificationsScreen from '../screens/NotificationsScreen';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import CalendarStackNavigation from './CalendarStackNavigation';
+import AllTasksNavigation from './AllTasksNavigation';
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-
-function TabNavigator() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Schedule" component={WeeklyScheduleScreen} />
-      <Tab.Screen name="Tasks" component={TaskListScreen} />
-      <Tab.Screen name="Notifications" component={NotificationsScreen} />
-    </Tab.Navigator>
-  );
-}
 
 function AppNavigator() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen 
-        name="Main" 
-        component={TabNavigator} 
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen 
-        name="CreateTask" 
-        component={CreateTaskScreen} 
-        options={{ title: 'New Task' }}
-      />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: '#000',
+          tabBarInactiveTintColor: '#fff',
+          tabBarActiveBackgroundColor: '#75A1A4',
+          tabBarIconStyle: {
+            display: 'none',
+            height: 0,
+          },
+          tabBarLabelStyle: {
+            fontSize: 14,
+            position: 'absolute',
+            top: 10, // Adjust this value to move text up/down
+          },
+          tabBarStyle: {
+            backgroundColor: '#757575',
+            height: 45,
+            paddingBottom: 0,
+            paddingTop: 0, // Remove top padding
+          }
+        }}>
+        <Tab.Screen
+          name="Calendar"
+          component={CalendarStackNavigation}
+          options={{headerShown: false}}
+        />
+        <Tab.Screen
+          name="All Tasks"
+          component={AllTasksNavigation}
+          options={{headerShown: false}}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
