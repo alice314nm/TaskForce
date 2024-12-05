@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
+import TaskCard from './TaskCard';
 
 const WeeklyCalendar = () => {
   const [weekOffset, setWeekOffset] = useState(0);
   const currentDate = new Date();
   const [chosenDay, setChosenDay] = useState(currentDate.getDay());
-  const [weekTasks, setWeekTasks] = useState<any[][]>([]);
+  const [weekTasks, setWeekTasks] = useState(Array(7).fill([]));
 
   // Add navigation functions
   const goToPreviousWeek = () => setWeekOffset(prev => prev - 1);
@@ -32,39 +33,34 @@ const WeeklyCalendar = () => {
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const weekDates = getWeekDates();
 
-  // Fetch tasks for the week
   const fetchWeekTasks = async () => {
     try {
       const response = await axios.get('http://10.0.2.2:5000/');
+      const allTasks = response.data;
       const dates = getWeekDates();
-      const tasks = await response.data;
-      dates.forEach((date, index) => {
-        const dayTasks = tasks.filter(
-          (task: {dueDate: Date}) => new Date(task.dueDate) === date,
+  
+      const tasksByDay = dates.map((date) => {
+        return allTasks.filter(
+          (task) => new Date(task.dueDate).toDateString() === date.toDateString()
         );
-        setWeekTasks(prevTasks => [...prevTasks, dayTasks]);
       });
+  
+      setWeekTasks(tasksByDay);
     } catch (error) {
-      console.error(error);
+      console.error('Error fetching tasks:', error);
     }
   };
+
   useFocusEffect(
     React.useCallback(() => {
       fetchWeekTasks();
     }, []),
   );
-  let weekTasksHardcoded = [
-    [1, 2, 3],
-    [1, 2],
-    [],
-    [1, 2, 3, 4],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1],
-    [1, 1, 1, 1, 1],
-  ]; // dummy data, please replace with actual data, which
-  // should be an array of tasks for the day
-  // calculated based on fetchWeekTasks function down below
-  // Get current date
+
+  useEffect(() => {
+    fetchWeekTasks();
+  }, [weekOffset]);
+
   return (
     <View style={styles.container}>
       {/* Week Navigation */}
@@ -92,34 +88,40 @@ const WeeklyCalendar = () => {
             style={[
               styles.dayHeader,
               styles.dayTaskBarArea,
-              {backgroundColor: index + 1 === chosenDay ? '#EEEEEE' : 'white'},
+              {backgroundColor: index === chosenDay ? '#EEEEEE' : 'white'},
             ]}
-            onPress={() => setChosenDay(index + 1)}>
+            onPress={() => setChosenDay(index)}>
             <View style={styles.textView}>
               <Text style={styles.dayText}>{day}</Text>
               <Text style={styles.dateText}>{weekDates[index].getDate()}</Text>
             </View>
             {/* Task Bar */}
             <View
-              style={[
-                weekTasksHardcoded[index].length >= 10
-                  ? styles.dayTaskBarFull
-                  : styles.dayTaskBar,
-                {
-                  height: `${
-                    weekTasksHardcoded[index].length > 10
-                      ? 87
-                      : weekTasksHardcoded[index].length * 8.7
-                  }%`,
-                },
-              ]}></View>
+            style={[
+              weekTasks[index].length >= 10
+                ? styles.dayTaskBarFull
+                : styles.dayTaskBar,
+              {
+                height: `${
+                  weekTasks[index].length > 10
+                    ? 87
+                    : weekTasks[index].length * 8.7
+                }%`,
+              },
+            ]}
+          />
           </TouchableOpacity>
         ))}
       </View>
 
       {/* Calendar grid - placeholder for now */}
       <View style={styles.calendarGrid}>
-        <Text>Calendar Content</Text>
+        <Text style={styles.dueText}>Tasks due {weekDates[chosenDay].toDateString()}</Text>
+        <FlatList
+          data={weekTasks[chosenDay]}
+          renderItem={({ item }) => <TaskCard task={item} />}
+          keyExtractor={item => item._id}
+          />
       </View>
     </View>
   );
@@ -152,6 +154,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
   },
+  dueText: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: '#666',
+    fontWeight: 'bold',
+  },
   textView: {
     alignItems: 'center',
   },
@@ -161,12 +169,12 @@ const styles = StyleSheet.create({
   },
   // Added styles, if the day is chosen, the background will be gray
   dayTaskBarArea: {
-    borderColor: '#5EA1A4',
+    borderColor: '#f0dcfc',
     borderWidth: 1,
   },
-  // if the tasks are less than 10, the bar will be green
+  // if the tasks are less than 10, the bar will be violet
   dayTaskBar: {
-    backgroundColor: '#5EA1A4',
+    backgroundColor: '#6750a4',
   },
   // if the tasks are more than 10, the bar will turn red
   dayTaskBarFull: {
@@ -178,12 +186,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: '#5EA1A4',
+    backgroundColor: '#EEEEEE',
   },
   weekText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
   },
 });
 

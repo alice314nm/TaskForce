@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WeeklyScheduleScreen from './screens/WeeklyScheduleScreen';
 import TaskListScreen from './screens/TaskListScreen';
 import CreateTaskScreen from './screens/CreateTaskScreen';
+import TaskSingleScreen from './screens/TaskSingleScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -16,6 +17,7 @@ function TabNavigator() {
         tabBarIcon: () => null,
         tabBarLabelStyle: {
           fontSize: 14,
+          bottom: 15
         }
       }}
     >
@@ -43,6 +45,11 @@ function AppNavigator() {
         name="CreateTask" 
         component={CreateTaskScreen}
         options={{ title: 'Create New Task' }}
+      />
+      <Stack.Screen 
+        name="TaskSingle" 
+        component={TaskSingleScreen}
+        options={{ title: 'Task' }}
       />
     </Stack.Navigator>
   );
