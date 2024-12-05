@@ -169,12 +169,12 @@ const styles = StyleSheet.create({
   },
   // Added styles, if the day is chosen, the background will be gray
   dayTaskBarArea: {
-    borderColor: '#5EA1A4',
+    borderColor: '#f0dcfc',
     borderWidth: 1,
   },
-  // if the tasks are less than 10, the bar will be green
+  // if the tasks are less than 10, the bar will be violet
   dayTaskBar: {
-    backgroundColor: '#5EA1A4',
+    backgroundColor: '#6750a4',
   },
   // if the tasks are more than 10, the bar will turn red
   dayTaskBarFull: {
@@ -186,12 +186,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: '#5EA1A4',
+    backgroundColor: '#EEEEEE',
   },
   weekText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
   },
 });
 

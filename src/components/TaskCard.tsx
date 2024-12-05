@@ -17,7 +17,13 @@ export default function TaskCard({ task }: TaskCardProps) {
       <Card.Content>
         <Title>{task.title}</Title>
         <Paragraph>{task.description}</Paragraph>
-        <Paragraph>Due: {new Date(task.dueDate).toLocaleDateString()}</Paragraph>
+        {task.completed ? (
+        <Paragraph>Due: {new Date(task.dueDate).toLocaleDateString()} | completed! </Paragraph>
+
+        ) : (
+          <Paragraph>Due: {new Date(task.dueDate).toLocaleDateString()} | in progress </Paragraph>
+
+        )} 
       </Card.Content>
     </Card>
   );

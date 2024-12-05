@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Title, Paragraph, Card, Text, Button } from 'react-native-paper';
 import { Task } from '../types';
+import { useNavigation } from '@react-navigation/native';
 
 interface TaskCardProps {
   task: Task;
@@ -10,6 +11,57 @@ interface TaskCardProps {
 export default function TaskSingleScreen({ route }: any) {
 
     const { task } = route.params;
+    const navigation = useNavigation();
+
+    const deleteTask = async () => {
+      try {
+        const response = await fetch(`http://10.0.2.2:5000/${task._id}`, {
+          method: 'DELETE',
+        });
+  
+        if (response.ok) {
+          Alert.alert('Success!', 'Task deleted successfully', [
+            {
+              text: 'OK',
+              onPress: () => navigation.goBack(),
+            },
+          ]);
+        } else {
+          const data = await response.json();
+          Alert.alert('Error', data.message || 'Failed to delete task');
+        }
+      } catch (error) {
+        Alert.alert('Error', 'An error occurred while deleting the task');
+      }
+    };
+
+    const completedTask = async () => {
+      try {
+        const response = await fetch(`http://10.0.2.2:5000/${task._id}/completed`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ completed: true }),
+        });
+    
+        if (response.ok) {
+          const updatedTask = await response.json();
+          Alert.alert('Success!', 'Task has been marked as completed!', [
+            {
+              text: 'OK',
+              onPress: () => navigation.goBack(),
+            },
+          ]);
+        } else {
+          const data = await response.json();
+          Alert.alert('Error', data.message || 'Failed to update task status');
+        }
+      } catch (error) {
+        Alert.alert('Error', 'An error occurred while updating the task status');
+      }
+    };
+  
 
     return (
         <View style={styles.container}>
@@ -18,13 +70,20 @@ export default function TaskSingleScreen({ route }: any) {
                 <Title style={styles.title}>{task.title}</Title>
                 <Paragraph style={styles.description}>{task.description}</Paragraph>
                 <Paragraph style={styles.description}>Category: {task.category}</Paragraph>
+                
+                {task.completed ? (
+                <Paragraph style={styles.description}>Task is completed!</Paragraph>
 
+                ) : (
+                  <Paragraph style={styles.description}>Task is in progress!</Paragraph>
+
+                )} 
                 <Paragraph style={styles.dueDate}>
                     <Text style={styles.boldText}>Due: {new Date(task.dueDate).toDateString()}</Text>
                 </Paragraph>
                 <View style={styles.buttonContainer}>
                 <Button
-                    onPress={() => console.log('Delete')}
+                    onPress={deleteTask}
                     mode="outlined"
                     style={[styles.button, styles.deleteButton]}
                     labelStyle={styles.deleteLabel}
@@ -32,7 +91,7 @@ export default function TaskSingleScreen({ route }: any) {
                     Delete
                 </Button>            
                 <Button
-                    onPress={() => console.log('Completed')}
+                    onPress={completedTask}
                     mode="outlined"
                     style={styles.button}
                 >
