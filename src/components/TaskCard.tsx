@@ -2,14 +2,18 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Paragraph, Title } from 'react-native-paper';
 import { Task } from '../types';
+import { useNavigation } from '@react-navigation/native';
 
 interface TaskCardProps {
   task: Task;
 }
 
 export default function TaskCard({ task }: TaskCardProps) {
+
+  const navigation = useNavigation();
+
   return (
-    <Card style={styles.card}>
+    <Card style={styles.card} onPress={() => navigation.navigate('TaskSingle', { task })}>
       <Card.Content>
         <Title>{task.title}</Title>
         <Paragraph>{task.description}</Paragraph>
