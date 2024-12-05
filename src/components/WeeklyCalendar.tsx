@@ -65,19 +65,15 @@ const WeeklyCalendar = () => {
     <View style={styles.container}>
       {/* Week Navigation */}
       <View style={styles.navigation}>
-        <IconButton
-          icon="chevron-left"
-          size={24}
-          onPress={goToPreviousWeek}
-        />
+        <TouchableOpacity onPress={goToPreviousWeek}>
+          <Text style={styles.navButton}>{'<'}</Text>
+        </TouchableOpacity>
         <Text style={styles.weekText}>
           Week of {getWeekDates()[0].toLocaleDateString()}
         </Text>
-        <IconButton
-          icon="chevron-right"
-          size={24}
-          onPress={goToNextWeek}
-        />
+        <TouchableOpacity onPress={goToNextWeek}>
+          <Text style={styles.navButton}>{'>'}</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Day headers */}
@@ -191,6 +187,11 @@ const styles = StyleSheet.create({
   weekText: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  navButton: {
+    fontSize: 24,
+    color: '#000',
+    padding: 3,
   },
 });
 
