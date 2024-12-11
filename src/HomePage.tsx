@@ -6,6 +6,7 @@ import WeeklyScheduleScreen from './screens/WeeklyScheduleScreen';
 import TaskListScreen from './screens/TaskListScreen';
 import CreateTaskScreen from './screens/CreateTaskScreen';
 import TaskSingleScreen from './screens/TaskSingleScreen';
+import InProgressTaskListScreen from './screens/InProgressTaskListScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -24,6 +25,10 @@ function TabNavigator() {
       <Tab.Screen
         name="Calendar"
         component={WeeklyScheduleScreen}
+      />
+      <Tab.Screen
+        name="In Progress"
+        component={InProgressTaskListScreen}
       />
       <Tab.Screen
         name="All Tasks"

@@ -13,7 +13,7 @@ export default function TaskCard({ task }: TaskCardProps) {
   const navigation = useNavigation();
 
   return (
-    <Card style={styles.card} onPress={() => navigation.navigate('TaskSingle', { task })}>
+    <Card style={task.completed ? styles.cardCompleted : styles.card} onPress={() => navigation.navigate('TaskSingle', { task })}>
       <Card.Content>
         <Title>{task.title}</Title>
         <Paragraph>{task.description}</Paragraph>
@@ -32,5 +32,9 @@ export default function TaskCard({ task }: TaskCardProps) {
 const styles = StyleSheet.create({
   card: {
     marginBottom: 16,
+  },
+  cardCompleted: {
+    marginBottom: 16,
+    backgroundColor: '#d4ccd9'
   },
 });

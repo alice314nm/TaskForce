@@ -14,8 +14,21 @@ connectDB();
 // Get all Tasks
 app.get('/', async (req, res) => {
   try {
-    const tasks = await taskModel.find();
+    const tasks = await taskModel.aggregate([
+      { $sort : { completed : 1 } }
+    ]);
     res.send(tasks);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// Get Tasks in progress
+app.get('/completed', async (req, res) => {
+  try {
+    const tasks = await taskModel.find({completed: false});
+    res.send(tasks);
+    
   } catch (error) {
     res.status(500).send(error);
   }
